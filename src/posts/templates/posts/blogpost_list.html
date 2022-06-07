@@ -1,0 +1,42 @@
+{% extends 'base.html' %} 
+{% block title %}
+    <title>Acceuil du blog</title>
+{% endblock %} 
+
+{% block content %}
+
+    <h1>Le blog des Pros</h1>
+
+    {% for post in posts %}
+
+        {% comment %} 
+        <article>
+            <h2>{{ posts.title }}</h2>
+            <h5 class="post-author">Publier par <i>{{ post.author_or_default }}</i> le {{post.created_on|date:'j F Y'}}</h5>
+            <p class="post-excerpt">{{post.content| safe| truncatewords:50}}</p>
+        </article> {% endcomment %}
+        <article>
+
+        <div class="post-title">
+                <h2>{{ post.title }}</h2>
+
+                {% if request.user.is_authenticated %}
+                    <div>
+                        <a href="{% url 'posts:editer' slug=post.slug %}">Editer</a>
+                        <a href="{% url 'posts:supprimer' slug=post.slug %}">supprimer</a>
+                    </div>
+                {% endif %} 
+
+            </div> 
+
+            <h5 class="post-author">Publier par <post>{{ post.author_or_default }}</post> le{{post.created_on|date:'j F Y'}}</h5>
+
+            <p class="post-excerpt">{{post.content| safe| truncatewords:50}}</p>
+
+            <form action="{% url 'posts:detail' slug=post.slug %}">
+                <button class="btn btn-submit">Lire l'article</button>
+            </form> 
+
+        </article>
+    {% endfor %} 
+{% endblock %}
